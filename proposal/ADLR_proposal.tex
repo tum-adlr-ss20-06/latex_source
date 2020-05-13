@@ -1,0 +1,91 @@
+\documentclass[10pt,oneside,a4paper]{report}
+
+%setting the margins
+\usepackage{geometry}
+\geometry{margin=1.5in}
+
+%for hungarian letters
+\usepackage[utf8]{inputenc}
+\renewcommand*\thesection{\arabic{section}}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+% bibliography
+\usepackage[style=ieee]{biblatex}
+
+\addbibresource{references.bib}
+\defbibheading{secbib}[\bibname]{%
+	\section*{#1}%
+	\markboth{#1}{#1}}
+	
+	
+\newcommand\ferisays[1]{\textcolor{red}{#1}} %comments from Feri
+\newcommand\kathisays[1]{\textcolor{blue}{#1}} %comments from katharina
+
+\begin{document}
+	
+\begin{center}
+\huge \textbf{Proposal Draft for ADLR Project}
+
+\bigskip
+\Large Group 06: Katharina Hermann and Ferenc Török
+\end{center}
+\bigskip
+
+
+The aim of our project is to train a Reinforcement Learning agent, which is able to carry out movements from a starting point to a goal point through challenging environment. Under challenging environment we understand a workspace with obstacles in the manipulation space with which the robot arm must not collide during movement. 
+
+The focus for training this agent is, that we use a modification of Hindsight Experience Repay \cite{HER}. When the robot's chosen trajectory fails to reach the goal in a specific workspace, instead of simply relabeling the goal to match the trajectory, as it is done for HER \cite{HER}, we sample a new goal and a new workspace, for which the trajectory would have been a good solution.
+
+In \cite{NMP} the authors argue that with HER the robot does not learn to navigate through narrow passages, since the high probability of collisions with the obstacles lead to a high negative reward in those regions and prevent the robot from exploring those regions. To remedy this issue, they use expert demonstrations (generated with traditional MP algorithms) to show the robot a way to navigate through these challenging workspaces with narrow passages. This method led to very good performance results, regarding efficiency and accuracy. 
+
+However, we believe that generating challenging environments to relabel the robot's goal is another way to show the robot how a perfect trajectory for a very narrow passage would have looked like, without having to model the perfect trajectories through challenging environments via traditional motion planners first. 
+
+
+
+The guidelines along which we will present our final project proposition are as follows:
+
+\begin{itemize}
+	\item We are going to model the robot as a point robot in 2D
+	\item We are going to apply a grid on the workspace to be able to distinguish between free space and obstacles.
+	\item The sampled workspace which matches the failure trajectory should be challenging for the robot. Therefore the obstacles are placed such that they form a narrow passage along the trajectory.
+	\item We are going to incorporate the ideas of Neural Motion Planning \cite{NMP}, Hindsight Experience Replay \cite{HER} and Generalized Hindsight Experience Replay \cite{GHER}.
+	\item The final goal is to evaluate the performance of the trained agent in previously unseen environments and compare it to the performances of the DDPG-MP agent \cite{NMP}
+\end{itemize}
+
+\section*{Planned milestones} 
+\begin{enumerate}
+    \item Initial setup 
+    \begin{itemize}
+         \item Setup of the environment - a grid with pixels that indicates whether there is an obstacle or not.
+         \item Implementation of the point robot's logic 
+    \end{itemize}
+    
+    \item Training Process with Hindsight Experience Replay and relabeling of the environment
+    \begin{itemize}
+         \item Implementing the DDPG algorithm or getting familiar with an off-the-shelf implementation.
+         \item Implementation of a strategy to generate challenging workspaces for relabeling
+         \item Training of the agent with the extended HER strategy of workspace relabeling
+    \end{itemize}
+    
+    \item Evaluation and Comparison to other methods such as DDPG-MP \cite{NMP}
+    \begin{itemize}
+         \item Evaluation of the trained agent in previously unseen workspaces possibly with different configurations (robot's complexity, complexity of the environment, variation in the generation strategies of the new workspace)
+         \item Comparison against the DDPG-MP \cite{NMP} algorithm with the metrics used in the paper.
+         
+    \end{itemize}
+\end{enumerate}
+
+\printbibliography[heading=secbib]
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
